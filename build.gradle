@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.7'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.harness'
+version = '0.1.0-SNAPSHOT'
+description = 'Учебный coding-агент на Spring AI'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    mockitoAgent
+}
+
+ext {
+    set('springAiVersion', '2.0.0')
+    set('excludedGroups', 'ollama,mcp,mission')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+    }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+
+	compileOnly 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	developmentOnly 'org.springframework.ai:spring-ai-spring-boot-docker-compose'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.assertj:assertj-core'
+
+	testCompileOnly 'org.projectlombok:lombok'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Резолв mockito-core jar для передачи в -javaagent (аналог maven-dependency-plugin)
+    mockitoAgent 'org.mockito:mockito-core'
+}
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.addAll([
+            '-Xlint:deprecation'
+    ])
+    options.deprecation = true
+    options.encoding = 'UTF-8'
+}
+
+bootRun {
+    // Кодировка UTF-8 для корректного отображения кириллицы в консоли Windows
+    jvmArgs = [
+            '-Dstdout.encoding=UTF-8',
+            '-Dstderr.encoding=UTF-8'
+    ]
+}
+
+test {
+    useJUnitPlatform {
+        // Исключаем тесты, требующие живой Ollama/MCP (запуск: ./gradlew test -PexcludedGroups=)
+        def excluded = project.findProperty('excludedGroups') ?: project.ext.excludedGroups
+        if (excluded) {
+            excludeTags(*excluded.split(','))
+        }
+    }
+
+    // Подключение mockito-agent для чистого мокирования без предупреждений JVM
+    jvmArgumentProviders.add(new CommandLineArgumentProvider() {
+        @Override
+        Iterable<String> asArguments() {
+            def mockitoJar = configurations.mockitoAgent.asPath
+            return [
+                    "-javaagent:${mockitoJar}".toString(),
+                    '-Xshare:off',
+                    '-Dstdout.encoding=UTF-8',
+                    '-Dstderr.encoding=UTF-8'
+            ]
+        }
+    })
+}
