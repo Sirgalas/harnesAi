@@ -8,8 +8,11 @@ spring:
     banner-mode: off
   ai:
     ollama:
-      base-url:
-
+      base-url: http://localhost:11431
+      chat:
+        think: false
+        temperature: 0.2
+        model: qwen3.5:4b
 logging:
   level:
     root: WARN

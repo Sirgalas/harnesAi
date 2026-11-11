@@ -1,8 +1,12 @@
 package ru.sergalas.harnes;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import ru.sergalas.harnes.agent.Agent;
 
+@Component
+@Profile("!test")
 public class DemoRunner implements CommandLineRunner {
     private final Agent agent;
 
