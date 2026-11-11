@@ -19,7 +19,9 @@ repositories {
 }
 
 configurations {
-    mockitoAgent
+    mockitoAgent {
+        transitive = false
+    }
 }
 
 ext {
@@ -86,7 +88,7 @@ test {
     jvmArgumentProviders.add(new CommandLineArgumentProvider() {
         @Override
         Iterable<String> asArguments() {
-            def mockitoJar = configurations.mockitoAgent.asPath
+            def mockitoJar = configurations.mockitoAgent.singleFile.absolutePath
             return [
                     "-javaagent:${mockitoJar}".toString(),
                     '-Xshare:off',

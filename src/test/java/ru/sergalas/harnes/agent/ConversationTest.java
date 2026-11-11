@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
+import ru.sergalas.harnes.agent.Conversation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,7 +15,7 @@ class ConversationTest {
         Conversation conversation = new Conversation("SYSTEM");
         conversation.addUserMessage("привет");
 
-        assertThat(conversation.toPromptMessages()).hasSize(2);
+        assertThat(conversation.toPromptMessage()).hasSize(2);
     }
 
     @Test
@@ -23,7 +24,7 @@ class ConversationTest {
         conversation.addUserMessage("вопрос");
         conversation.addAssistantMessage(new AssistantMessage("ответ"));
 
-        assertThat(conversation.toPromptMessages())
+        assertThat(conversation.toPromptMessage())
                 .extracting(Message::getMessageType)
                 .containsExactly(MessageType.SYSTEM, MessageType.USER, MessageType.ASSISTANT);
     }
