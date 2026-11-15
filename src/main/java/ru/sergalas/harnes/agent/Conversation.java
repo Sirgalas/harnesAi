@@ -4,7 +4,6 @@ import org.springframework.ai.chat.messages.Message;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 
@@ -24,7 +23,7 @@ public class Conversation {
         messages.add(assistantMessage);
     }
 
-    public List<Message> toPromptMessage() {
+    public List<Message> toPromptMessages() {
         ArrayList<Message> prompt = new ArrayList<>(messages.size() + 1);
         prompt.add(new SystemMessage(systemPrompt));
         prompt.addAll(messages);
