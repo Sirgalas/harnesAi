@@ -16,6 +16,10 @@ spring:
         think: false
         temperature: 0.2
         model: qwen3.5:4b
+harness:
+  agent:
+    max-tunes: 20
+    workspace-root: .
 logging:
   level:
     root: WARN
