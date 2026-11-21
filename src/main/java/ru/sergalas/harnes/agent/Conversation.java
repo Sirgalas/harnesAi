@@ -1,11 +1,9 @@
 package ru.sergalas.harnes.agent;
 
-import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 
 public class Conversation {
     private final String systemPrompt;
@@ -28,5 +26,9 @@ public class Conversation {
         prompt.add(new SystemMessage(systemPrompt));
         prompt.addAll(messages);
         return prompt;
+    }
+
+    public void addToolResponse(ToolResponseMessage toolResponseMessage) {
+        messages.add(toolResponseMessage);
     }
 }

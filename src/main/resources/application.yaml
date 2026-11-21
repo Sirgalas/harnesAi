@@ -18,7 +18,7 @@ spring:
         model: qwen3.5:4b
 harness:
   agent:
-    max-tunes: 20
+    max-turns: 20
     workspace-root: .
 logging:
   level:
