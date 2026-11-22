@@ -51,7 +51,7 @@ public class Agent {
         Instant startTime = Instant.now();
         conversation.addUserMessage(userMessage);
         publisher.publishEvent(new AgentEvent.TurnStarted(userMessage));
-        for(int iteration = 0; iteration < agentProperty.maxTurns(); iteration++ ) {
+        for(int iteration = 1; iteration <= agentProperty.maxTurns(); iteration++ ) {
             Prompt prompt = Prompt
                     .builder()
                     .messages(conversation.toPromptMessages())

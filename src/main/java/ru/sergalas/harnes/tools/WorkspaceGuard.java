@@ -26,8 +26,8 @@ public class WorkspaceGuard {
         }
 
         Path candidate = Path.of(path);
-        Path resolved = (candidate.isAbsolute()) ? candidate : root.resolve(candidate).normalize();
-        if(resolved.startsWith(root)) {
+        Path resolved = (candidate.isAbsolute() ? candidate : root.resolve(candidate)).normalize();
+        if(!resolved.startsWith(root)) {
             throw new WorkspaceViolationException(" путь не принадлежит рабочей директории");
         }
         try{

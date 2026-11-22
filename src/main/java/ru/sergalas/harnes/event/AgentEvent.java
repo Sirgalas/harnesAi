@@ -11,5 +11,5 @@ public sealed interface AgentEvent {
 
     public record TollCallStarted(String toolName, String description) implements AgentEvent {}
     public record TollCallFinished(String toolName, boolean error, String preview, Duration  duration) implements AgentEvent {}
-    record TurnLimitReached(int maxTurn) implements AgentEvent {}
+    record TurnLimitReached(int maxTurns) implements AgentEvent {}
 }
