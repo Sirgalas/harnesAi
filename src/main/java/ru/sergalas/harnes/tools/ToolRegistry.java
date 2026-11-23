@@ -16,11 +16,10 @@ public class ToolRegistry {
 
     private final Map<String, Tool<?>>  toolsByName = new LinkedHashMap<>();
     private final ApplicationEventPublisher publisher;
-    private final JsonHelper jsonHelper;
+    private final JsonHelper jsonHelper = new JsonHelper();
 
-    public ToolRegistry(List<Tool<?>> tools, ApplicationEventPublisher publisher, JsonHelper jsonHelper) {
+    public ToolRegistry(List<Tool<?>> tools, ApplicationEventPublisher publisher) {
         this.publisher = publisher;
-        this.jsonHelper = jsonHelper;
         for (Tool<?> tool : tools) {
             Tool<?> clash = toolsByName.put(tool.name(), tool);
             if (clash != null) {

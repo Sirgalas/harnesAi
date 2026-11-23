@@ -44,7 +44,7 @@ public class FileReaderTool<I> implements Tool<FileReaderTool.Input> {
 
     @Override
     public String name() {
-        return "";
+        return "Read";
     }
 
     @Override
